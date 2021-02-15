@@ -1,0 +1,88 @@
+:root{
+    --header-color: rgb(165, 120, 120);
+    --header-lighter: rgb(165, 140, 140);
+    --main-color: rgb(245, 245, 230);
+    --head-color: white;
+    --square-hover: rgb(243, 230, 230);
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body{
+    font-size: 1.6rem;
+    background-color: var(--main-color);
+}
+  
+header{
+    font-size: 3rem;
+    font-family: 'Reggae One', cursive;
+    color: var(--head-color);
+    text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+}
+  
+h1{
+    line-height: 1.3;
+}
+
+.just-header{
+    text-align: center;
+    border-bottom: 3px solid black;
+    background-color: var(--header-color);
+    padding: 2.5rem;
+    
+}
+
+.round-text{
+    text-align: center;
+    padding: 3rem;
+    font-family: monospace;
+}
+
+.board{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: 484px;
+    width: 484px;
+    border: 2px solid black;
+    margin: auto;
+}
+
+.square{
+    border: 2px solid black;
+    height: 160px;
+    width: 160px;
+    cursor: pointer;
+    text-align: center;
+    font-family: 'Reggae One', cursive;
+    font-size: 5rem;
+}
+
+.square:hover{
+    background-color: var(--square-hover);
+}
+
+.restart{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.restart-button{
+    padding: 7px 14px;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+    background-color: var(--header-color);
+}
+
+.restart-button:hover{
+    background-color: var(--header-lighter);
+}
