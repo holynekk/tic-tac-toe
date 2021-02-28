@@ -3,8 +3,6 @@ let gameMode;
 
 askMode();
 
-
-
 // Player factory function.
 const Player = (sign)=>{
     this.sign = sign;
@@ -18,7 +16,6 @@ const Player = (sign)=>{
 
 const theGame = (()=>{
     let gameBoard = ["", "", "", "", "", "", "", "", ""];
-
     const getSquare = (ind)=>{
         return gameBoard[ind];
     };
@@ -33,7 +30,7 @@ const theGame = (()=>{
         }
     };
 
-    return{getSquare, setSquare, resetBoard};
+    return{getSquare, setSquare, resetBoard, emptySquares, gameBoard};
 })();
 
 const resultControl = (()=>{
@@ -91,6 +88,13 @@ const playGame = (()=>{
     function playRound(index){
         theGame.setSquare(index, currentSign());
 
+        // This place is for AI.
+        if(gameMode === "pvc"){
+            if(isThereWinner() === false){
+                bestSpot();
+            }
+        }
+        
         if(isThereWinner()){
             resultControl.setResult(currentSign());
             over = true;    
@@ -101,10 +105,12 @@ const playGame = (()=>{
             over = true;
             return;
         } 
-        round++;
-        resultControl.setMessage(`Player ${currentSign()}'s turn`);
 
-        // This place is for AI.
+        if(gameMode === "pvc"){
+            round += 2;
+        }else round++;
+
+        resultControl.setMessage(`Player ${currentSign()}'s turn`);
     }
 
     function currentSign(){
@@ -124,6 +130,7 @@ const playGame = (()=>{
         let conditions = [[0,1,2], [3,4,5], [6,7,8], [0,4,8], [2,4,6], [0,3,6], [1,4,7], [2,5,8]];
         let result = 0;
         let flag = false;
+        let winner;
         conditions.forEach(condition=>{
             result = 0;
             for(let i = 0; i < 3; i++){
@@ -138,13 +145,93 @@ const playGame = (()=>{
             }
             if(result < 4 && result % 3 === 0){
                 flag =  true;
+                winner = theGame.gameBoard[condition[0]];
             }
         });
-        return flag;
+        if(flag){
+            return winner;
+        }for(let i = 0; i < theGame.gameBoard.length; i++){
+            if(theGame.gameBoard[i] === ""){
+                return false;
+            }
+        }
+        return "tie";
     }
-    return {isOver,resetGame, playRound};
+    return {isOver,resetGame, playRound, isThereWinner};
 })();
 
+function emptySquares(tmpGrid){
+    let empties = [];
+    for(let i = 0; i < 9; i++){
+        if(tmpGrid[i] == ""){
+            empties.push(i);
+        }
+    }return empties;
+}
+
+function bestSpot(){
+    let bestScore = -Infinity;
+    let bestMove;
+
+    let availableSpots = emptySquares(theGame.gameBoard);
+
+    for(let i = 0; i < availableSpots.length; i++){
+
+        theGame.gameBoard[availableSpots[i]] = 'O';
+
+        let score = minimax(theGame.gameBoard, 0, false);
+
+        theGame.gameBoard[availableSpots[i]] = '';
+        if(score > bestScore){
+            bestScore = score;
+            bestMove = availableSpots[i];
+        }
+    }
+    theGame.setSquare(bestMove, 'O');
+}
+
+function minimax(board, depth, isMaximizing){
+    let result = playGame.isThereWinner();
+
+    if(result){
+        if(result === 'X'){
+            return -10;
+        }else if(result === 'O'){
+            return 10;
+        }else if(result === "tie"){
+            return 0;
+        }
+    }
+
+    if(isMaximizing){
+        let bestScore = -Infinity;
+
+        let availableSpots = emptySquares(theGame.gameBoard);
+        for(let i = 0; i < availableSpots.length; i++){
+            board[availableSpots[i]] = 'O';
+            let score = minimax(board, depth+1, false);
+            board[availableSpots[i]] = '';
+            if(score > bestScore){
+                bestScore = score;
+            }
+        }
+        return bestScore;
+    }
+    else{
+        let bestScore = Infinity;
+        
+        let availableSpots = emptySquares(theGame.gameBoard);
+        for(let i = 0; i < availableSpots.length; i++){
+            board[availableSpots[i]] = 'X';
+            let score = minimax(board, depth+1, true);
+            board[availableSpots[i]] = '';
+            if(score < bestScore){
+                bestScore = score;
+            }     
+        }
+        return bestScore;
+    }
+}
 
 
 function askMode(){
@@ -158,7 +245,7 @@ function askMode(){
 
     const gameText = document.createElement("p");
     gameText.textContent = "Let's choose the game mode..";
-    gameText.classList.add('game-text')
+    gameText.classList.add('game-text');
 
     firstScreen.appendChild(gameText);
 
