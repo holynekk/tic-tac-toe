@@ -1,4 +1,8 @@
-"use strict";
+
+let gameMode;
+
+askMode();
+
 
 
 // Player factory function.
@@ -89,16 +93,18 @@ const playGame = (()=>{
 
         if(isThereWinner()){
             resultControl.setResult(currentSign());
-            over = true;
+            over = true;    
             return;
         }
         if(round === 9){
             resultControl.setResult("draw");
             over = true;
             return;
-        }
+        } 
         round++;
         resultControl.setMessage(`Player ${currentSign()}'s turn`);
+
+        // This place is for AI.
     }
 
     function currentSign(){
@@ -138,3 +144,47 @@ const playGame = (()=>{
     }
     return {isOver,resetGame, playRound};
 })();
+
+
+
+function askMode(){
+    const bodyElement = document.querySelector('body');
+
+    const firstScreen = document.createElement('div');
+    firstScreen.classList.add('firstScreen');
+
+    const buttonConrainer = document.createElement('div');
+    buttonConrainer.classList.add('button-container');
+
+    const gameText = document.createElement("p");
+    gameText.textContent = "Let's choose the game mode..";
+    gameText.classList.add('game-text')
+
+    firstScreen.appendChild(gameText);
+
+    const playerButton = document.createElement('div');
+    const computerButton = document.createElement('div');
+
+    playerButton.classList.add('modeButton');
+    computerButton.classList.add('modeButton');
+
+    playerButton.textContent = "Player vs Player";
+    computerButton.textContent = "Player vs Computer";
+
+    playerButton.addEventListener("click",()=>{
+        gameMode = "pvp";
+        bodyElement.removeChild(firstScreen);
+    });
+
+    computerButton.addEventListener("click",()=>{
+        gameMode = "pvc";
+        bodyElement.removeChild(firstScreen);
+    });
+
+    buttonConrainer.appendChild(playerButton);
+    buttonConrainer.appendChild(computerButton);
+
+    firstScreen.appendChild(buttonConrainer);
+
+    bodyElement.appendChild(firstScreen);
+}
