@@ -92,6 +92,7 @@ const playGame = (()=>{
         if(gameMode === "pvc"){
             if(isThereWinner() === false){
                 bestSpot();
+                round++;
             }
         }
         
@@ -106,9 +107,7 @@ const playGame = (()=>{
             return;
         } 
 
-        if(gameMode === "pvc"){
-            round += 2;
-        }else round++;
+        round++;
 
         resultControl.setMessage(`Player ${currentSign()}'s turn`);
     }
@@ -192,7 +191,6 @@ function bestSpot(){
 
 function minimax(board, depth, isMaximizing){
     let result = playGame.isThereWinner();
-
     if(result){
         if(result === 'X'){
             return -10;
@@ -205,7 +203,6 @@ function minimax(board, depth, isMaximizing){
 
     if(isMaximizing){
         let bestScore = -Infinity;
-
         let availableSpots = emptySquares(theGame.gameBoard);
         for(let i = 0; i < availableSpots.length; i++){
             board[availableSpots[i]] = 'O';
@@ -219,7 +216,6 @@ function minimax(board, depth, isMaximizing){
     }
     else{
         let bestScore = Infinity;
-        
         let availableSpots = emptySquares(theGame.gameBoard);
         for(let i = 0; i < availableSpots.length; i++){
             board[availableSpots[i]] = 'X';
