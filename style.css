@@ -1,9 +1,10 @@
 :root{
-    --header-color: rgb(165, 120, 120);
-    --header-lighter: rgb(165, 140, 140);
-    --main-color: rgb(245, 245, 230);
-    --head-color: white;
-    --square-hover: rgb(243, 230, 230);
+    --header-color: #4E4E50;
+    --header-lighter: #ec084c;
+    --main-color: #1A1A1D;
+    --nice-red: #C3073F;
+    --square-hover: rgba(243, 230, 230, 0.8);
+    --grid-color: #7c7c81;
 }
 
 *,
@@ -22,8 +23,8 @@ body{
 header{
     font-size: 3rem;
     font-family: 'Reggae One', cursive;
-    color: var(--head-color);
-    text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+    color: var(--nice-red);
+    text-shadow: -3px 0 WHITE, 0 3px WHITE, 3px 0 WHITE, 0 -3px WHITE;
 }
   
 h1{
@@ -41,7 +42,10 @@ h1{
 .round-text{
     text-align: center;
     padding: 3rem;
-    font-family: monospace;
+    font-family: 'Teko', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 0.2rem;
+    color: white;
 }
 
 .board{
@@ -49,22 +53,24 @@ h1{
     grid-template-columns: repeat(3, 1fr);
     height: 484px;
     width: 484px;
-    border: 2px solid black;
+    border: 2px solid var(--grid-color);
     margin: auto;
 }
 
 .square{
-    border: 2px solid black;
+    border: 2px solid var(--grid-color);
     height: 160px;
     width: 160px;
     cursor: pointer;
     text-align: center;
     font-family: 'Reggae One', cursive;
     font-size: 5rem;
+    color: white;
 }
 
 .square:hover{
     background-color: var(--square-hover);
+    transition: background-color 0.2s linear;
 }
 
 .restart{
@@ -75,16 +81,17 @@ h1{
 
 .restart-button{
     padding: 7px 14px;
-    border: 2px solid black;
-    border-radius: 5px;
+    border: 2px solid white;
+    border-radius: 10px;
     font-size: 1.5rem;
     cursor: pointer;
     color: white;
-    background-color: var(--header-color);
+    background-color: var(--nice-red);
 }
 
 .restart-button:hover{
     background-color: var(--header-lighter);
+    transition: background-color 0.2s linear;
 }
 
 
@@ -118,7 +125,7 @@ h1{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: burlywood;
+    background-color: var(--nice-red);
     transition: top ease 0.5s;
     margin-right: 70px;
     margin-left: 70px;
@@ -126,11 +133,13 @@ h1{
     font-family: monospace;
     font-size: 1.5rem;
     color: white;
+    top: 0;
 }
 
 
 .modeButton:hover{
-    top: -10px;
+    top: -15px;
+    transition: top 0.6s ease;
 }
 
 
